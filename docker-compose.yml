@@ -1,0 +1,22 @@
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: shubhojeet-postgres
+    environment:
+      POSTGRES_DB: shubhojeet2
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Jeet
+    ports:
+      - "5434:5432"
+    volumes:
+      - shubhojeet_pg_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-extensions.sql:/docker-entrypoint-initdb.d/01-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shubhojeet2"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  shubhojeet_pg_data:
